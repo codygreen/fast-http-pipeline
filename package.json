@@ -8,7 +8,8 @@
     "gendist": "docker create http_pipeline | xargs -I$ docker cp $:/usr/src/app/ dist && rm -rf dist/node_modules",
     "test": "nyc npx mocha",
     "version": "npm run build && npm run gendist && git commit -a -m'release'",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
