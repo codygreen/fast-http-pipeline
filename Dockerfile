@@ -3,13 +3,11 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 
-#FROM http_pipeline_depdendencies as http_pipeline_tests
-#COPY lib lib/
-#COPY index.js ./
-#COPY test test/
-#RUN npm test
+FROM http_pipeline_depdendencies as http_default_pipelines
+ENV F5_FAST_TEMPLATE_ROOT /var/config/pipelines/
+COPY ./pipelines/* /var/config/pipelines/
 
-FROM http_pipeline_depdendencies as http_pipeline
+FROM http_default_pipelines as http_pipeline
 #COPY lib/ lib/
 COPY index.js ./
 #COPY server.js ./
