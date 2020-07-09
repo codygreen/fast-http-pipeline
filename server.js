@@ -58,7 +58,9 @@ const httpPostPipeline = (req, res) => {
       buffer.push(data.toString('utf8'));
     });
     req.on('end', () => {
-      const params = JSON.parse(buffer.join(''));
+      const params = {
+        body: JSON.parse(buffer.join(''))
+      }
       console.log(params);
       console.log(press);
       // EXECUTE PIPELINE
@@ -70,13 +72,13 @@ const httpPostPipeline = (req, res) => {
             // DONE , result holds result
             console.log(result);
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(result));
+            res.end(result.body);
           });
       } else {
         return taskRouter(config)(params)
           .then((result) => {
             // DONE , result holds result
-            res.end(result);
+            res.end(result.body);
           });
       }
     });
@@ -84,7 +86,7 @@ const httpPostPipeline = (req, res) => {
       res.end('500: template error');
     });
   } else {
-    res.end('404: template not found');
+    res.end('404: pipeline not found');
   }
 };
 
@@ -114,5 +116,5 @@ ls(basedir)
     // template set loaded in cache at this point
 
     //server start
-    server.listen(3000);
+    server.listen(80);
   });
